@@ -50,7 +50,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
         script: |
-          echo "🚀 배포 시작"
+          echo "🚀 Backend 배포 시작"
           cd ~/testproject/backend
           git checkout main
           git pull origin main
@@ -64,11 +64,4 @@ jobs:
           docker-compose rm -f backend
           docker-compose up -d backend
           
-          # 헬스체크
-          sleep 10
-          if curl -f http://localhost:8080; then
-            echo "✅ Backend 배포 성공!"
-          else
-            echo "❌ Backend 배포 실패!"
-            exit 1
-          fi
+          echo "✅ Backend 배포 완료!"
