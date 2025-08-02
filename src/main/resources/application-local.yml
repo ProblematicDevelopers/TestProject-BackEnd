@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: pd-test-backend
+    
+  datasource:
+    # 로컬 개발시 EC2 DB 사용
+    url: jdbc:mysql://52.79.176.109:3306/pd_test?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    
+    # 로컬 DB 사용시 (주석 해제)
+    # url: jdbc:mysql://localhost:3307/pd_test_local?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    # username: root
+    # password: localpassword
+    
+    username: root
+    password: rootpassword1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        
+  redis:
+    # 로컬 개발시 EC2 Redis 사용
+    host: 52.79.176.109
+    port: 6379
+    password: redispassword1234
+    
+    # 로컬 Redis 사용시 (주석 해제)
+    # host: localhost
+    # port: 6380
+    # password: localpassword
+    
+server:
+  port: 8080
+  
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.test: DEBUG
+
+# CORS 설정
+cors:
+  allowed-origins:
+    - http://localhost:5173
+    - http://localhost:3000
+    - http://52.79.176.109
+    - http://52.79.176.109:80
