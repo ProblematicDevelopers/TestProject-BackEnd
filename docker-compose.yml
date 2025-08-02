@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: pd-test-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword1234
+      MYSQL_DATABASE: pd_test
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - pd-test-network
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: pd-test-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass redispassword1234
+    volumes:
+      - redis_data:/data
+    networks:
+      - pd-test-network
+    restart: always
+
+  backend:
+    build: .
+    container_name: pd-test-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/pd_test?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      SPRING_REDIS_HOST: redis
+    networks:
+      - pd-test-network
+    restart: always
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  pd-test-network:
+    driver: bridge
