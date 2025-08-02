@@ -3,7 +3,9 @@ spring:
     name: pd-test-backend
     
   datasource:
-    url: jdbc:mysql://localhost:3306/pd_test?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    # 로컬 개발시: localhost 또는 52.79.176.109 사용
+    # Docker 컨테이너에서는 docker-compose의 환경변수가 오버라이드함
+    url: jdbc:mysql://52.79.176.109:3306/pd_test?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: rootpassword1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -18,7 +20,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         
   redis:
-    host: localhost
+    # 로컬 개발시: localhost 또는 52.79.176.109 사용
+    # Docker 컨테이너에서는 docker-compose의 환경변수가 오버라이드함
+    host: 52.79.176.109
     port: 6379
     password: redispassword1234
     
@@ -29,3 +33,12 @@ logging:
   level:
     org.springframework.web: DEBUG
     com.test: DEBUG
+
+# CORS 설정 (Frontend 접근 허용)
+cors:
+  allowed-origins:
+    - http://localhost:5173
+    - http://localhost:3000
+    - http://52.79.176.109
+    - http://52.79.176.109:80
+    - http://52.79.176.109:3000

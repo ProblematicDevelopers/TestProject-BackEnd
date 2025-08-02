@@ -55,3 +55,7 @@ Thumbs.db
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
+
+### Docker Compose (로컬 개발용) ###
+docker-compose.yml
+docker-compose.local.yml
