@@ -12,16 +12,16 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
     
     - name: Cache Gradle packages
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ~/.gradle/caches
@@ -41,7 +41,7 @@ jobs:
     
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: build/test-results/test/
@@ -53,7 +53,7 @@ jobs:
     
     steps:
     - name: Deploy to Dev Environment
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
@@ -79,7 +79,7 @@ jobs:
     
     steps:
     - name: Deploy to Production
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
@@ -102,10 +102,5 @@ jobs:
           # 헬스체크
           sleep 10
           curl -f http://localhost:8080 || exit 1
-          
-          # Slack 알림 (선택사항)
-          # curl -X POST -H 'Content-type: application/json' \
-          #   --data '{"text":"Backend 운영 배포 완료!"}' \
-          #   ${{ secrets.SLACK_WEBHOOK }}
           
           echo "✅ Production deployment completed!"
